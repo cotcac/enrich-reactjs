@@ -7,8 +7,9 @@ import { useEffect } from 'react';
 export default function About() {
     // auto call after component init
     useEffect(() => {
-        console.log("call me");
-    }, []);
+        // Update the document title using the browser API
+        document.title = `About`;
+      });
 
     return (
         <div>

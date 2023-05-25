@@ -68,3 +68,17 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+# Day 2
+1. Router
+https://reactrouter.com/en/main/hooks/use-routes
+https://reactrouter.com/en/main/components/outlet
+2. Call API
+https://www.npmjs.com/package/axios
+Utils/helper library.
+3. React environment
+https://create-react-app.dev/docs/adding-custom-environment-variables/
+4. UseContext
+https://react.dev/reference/react/useContext
+5. React form
+https://react.dev/reference/react/useState
