@@ -82,3 +82,15 @@ https://create-react-app.dev/docs/adding-custom-environment-variables/
 https://react.dev/reference/react/useContext
 5. React form
 https://react.dev/reference/react/useState
+
+# Day 3
+- fix backend register.
+- CRUD posts.
+- CKEditor 
+- Upload files.
+
+# Day 4
+- fix update post: topic not set
+- Ckeditor plugin: UPload image, write code
+- Render code with color.
+- List post pagination, filter, search

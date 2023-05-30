@@ -8,6 +8,9 @@ import NotFound from "./components/NotFound";
 import Topic from "./components/Topic";
 import Register from "./components/Register";
 import Login from "./components/Login";
+import WritePost from "./components/write";
+import ReadPost from "./components/ReadPost";
+import ListPost from "./components/ListPosts";
 
 function App() {
   let element = useRoutes([
@@ -26,6 +29,9 @@ function App() {
         {  path: "topic", element: <Topic />,},
         {  path: "register", element: <Register />,},
         {  path: "login", element: <Login />,},
+        {  path: "list", element: <ListPost />,},
+        {  path: "write/:id", element: <WritePost />,},
+        {  path: "read/:id", element: <ReadPost />,},
         {  path: "*", element: <NotFound />,},
       ],
     },

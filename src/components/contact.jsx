@@ -6,8 +6,10 @@ export default function Contact() {
         document.title = `Contact`;
       },[]);
     return (
-        <div>
+        <div className="container">
+            <div className="row">
             <h1>Contact US</h1>
+        </div>
         </div>
     )
 }

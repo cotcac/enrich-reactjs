@@ -30,6 +30,9 @@ export default function Navigation() {
                         <li className="nav-item">
                             <Link className="nav-link" to="/topic"> Topic </Link>
                         </li>
+                        <li className="nav-item">
+                            <Link className="nav-link" to="/list"> New Posts </Link>
+                        </li>
                     </ul>
 
                     <ul className="navbar-nav ms-auto">
