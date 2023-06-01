@@ -105,3 +105,6 @@ npm add file:./ckeditor5
 - List post pagination, filter, search
 Reference:
 https://reactrouter.com/en/main/hooks/use-location
+
+Day 5
+- Virtual dom, layzy load (angular)
