@@ -3,6 +3,7 @@ import { useParams } from "react-router";
 import { UserContext } from "./context"
 import PostsService from "../api/PostsService";
 // import { UserContext } from '../../layouts/context';
+import Highlight from 'react-highlight'
 import { Link } from 'react-router-dom';
 import { Button } from '@mui/material';
 
@@ -61,7 +62,10 @@ export default function ReadPost() {
                 <div className="col-8">
                     <h1>{post.title}</h1>
 
-                    <div dangerouslySetInnerHTML={{ __html: post.content }}></div>
+                    {/* <div dangerouslySetInnerHTML={{ __html: post.content }}></div> */} 
+                    <Highlight innerHTML={true}>
+                        {post.content}
+                    </Highlight>
                     {user && user.id === post.user.id && (<>
                         <Link to={'/write/' + post.id}>Edit</Link> |
                         <Button onClick={handleDelete}>Delete</Button>

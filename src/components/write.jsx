@@ -2,7 +2,9 @@ import { Button, InputLabel, MenuItem, Select, TextField } from "@mui/material";
 import { useEffect, useState } from "react";
 import { httpNoAuth } from "../helper/httpCommon";
 import { CKEditor } from '@ckeditor/ckeditor5-react';
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+// import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import FilesService from "../api/fileService";
+import Editor from "ckeditor5-custom-build"
 import PostsService from "../api/PostsService";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -15,7 +17,7 @@ export default function WritePost() {
         id: 0,
         title: "",
         content: "",
-        topic: "",
+        topic: 0,
         tags: ""
     };
 
@@ -43,7 +45,14 @@ export default function WritePost() {
         if (id === "0") return;
         PostsService.getOne(id).then(response => {
             console.log(response);
-            setBlog(response.data);
+            const data = {
+                id: response.data.id,
+                title: response.data.title,
+                content: response.data.content,
+                topic: response.data.topic.id,
+                tags: response.data.tags
+            }
+            setBlog(data);
         }).catch((error) => {
             setAPIError(error.message ? error.message : "Something went wrong!")
             setIsLoading(false)
@@ -80,7 +89,7 @@ export default function WritePost() {
     const handleCreate = (data) => {
         PostsService.create(data)
             .then((response) => {
-                // resetForm()
+                resetForm()
                 console.log(response);
                 console.log(response.data.id);
                 navigate(`/read/${response.data.id}`);
@@ -92,7 +101,7 @@ export default function WritePost() {
             });
     };
     const resetForm = () => {
-        myeditor.setData('');
+        // myeditor.setData('');
         setBlog(initialState);
         setErrors(initialState)
     };
@@ -113,6 +122,42 @@ export default function WritePost() {
                 // always executed
             });
     }
+    function uploadPlugin(editor) {
+        editor.plugins.get('FileRepository').createUploadAdapter = (loader) => {
+            return uploadAdapter(loader);
+        };
+    }
+    function uploadAdapter(loader) {
+        console.log(loader);
+
+        return {
+            upload: () => {
+                return new Promise((resolve, reject) => {
+                    loader.file.then((file) => {
+                        console.log("file>>>", file);
+                        let formData = new FormData();
+                        formData.append("url", file);
+                        formData.append("name", 72);
+                        formData.append("url1", "test body");
+                        console.log("body>>>", formData);
+                        for (var key of formData.entries()) {
+                            console.log(key[0] + ', ' + key[1]);
+                        }
+                        FilesService.upload(formData).then((response) => {
+                            console.log(response);
+                            resolve({
+                                default: `${process.env.REACT_APP_API}/${response.data.url}`
+                            });
+                        })
+                            .catch((err) => {
+                                reject(err);
+                                console.log(err);
+                            });
+                    });
+                });
+            }
+        };
+    }
     return (
         <div className="container">
             <h1>Write blog</h1>
@@ -131,7 +176,10 @@ export default function WritePost() {
                 helperText={errors.title && errors.title[0]}
             />
             <CKEditor
-                editor={ClassicEditor}
+                config={{
+                    extraPlugins: [uploadPlugin]
+                   }}
+                editor={Editor}
                 data={newBlog.content || ''}
                 onReady={editor => {
                     // You can store the "editor" and use when it is needed.

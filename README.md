@@ -92,5 +92,16 @@ https://react.dev/reference/react/useState
 # Day 4
 - fix update post: topic not set
 - Ckeditor plugin: UPload image, write code
+
+# Config ckeditor
+```
+cd ckeditor5
+npm install
+npm run build
+npm add file:./ckeditor5
+```
 - Render code with color.
+  
 - List post pagination, filter, search
+Reference:
+https://reactrouter.com/en/main/hooks/use-location

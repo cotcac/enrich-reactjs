@@ -1,0 +1,7 @@
+img {
+    max-width: 100%;
+}
+/* default ckeditor hight */
+.ck-editor__editable {
+    min-height: 400px !important;
+}
