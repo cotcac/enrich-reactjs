@@ -69,7 +69,6 @@ export default function WritePost() {
     }
     const handleSubmit = () => {
         console.log("[new post] ",newBlog);
-        handleCreate(newBlog);
         return isEdit
             ? handleUpdate(newBlog)
             : handleCreate(newBlog);

@@ -3,6 +3,8 @@ import PostsService from "../api/PostsService";
 import { Link, useLocation, useSearchParams } from "react-router-dom";
 import { Alert, Avatar, Button, ButtonGroup, Grid, LinearProgress, List, ListItem, ListItemAvatar, ListItemText } from "@mui/material";
 import moment from 'moment';
+import Topic from "./Topic";
+import PostItem from "./posts/postItem";
 // console.log(moment.now());
 
 export default function ListPost() {
@@ -25,11 +27,11 @@ export default function ListPost() {
         document.title = `List Post`;
         setCurPage(searchParams.get('page'));
         console.log("[current page]",curPage);
-        getPosts(curPage)
+        getPosts(curPage || 1)
     }, [curPage, location]);
 
     const getPosts = (page) => {
-        console.log("Get topic");
+        setIsLoading(true);
         PostsService.getAll(page)
             .then(function (response) {
                 // handle success
@@ -37,7 +39,8 @@ export default function ListPost() {
                 setPosts(response.data.results);
                 setNextPage(response.data.next);
                 setPrevPage(response.data.previous);
-                setIsLoading(false)
+                setIsLoading(false);
+                setAPIError("");
             })
             .catch(function (error) {
                 // handle error
@@ -63,22 +66,20 @@ export default function ListPost() {
     return (
         <div className="container">
             <div className="row">
+                <div className="col-md-8">
                 <h1>List Post</h1>
-                {isLoading && <LinearProgress />}
-                {apiError && <Alert severity="error">{apiError}</Alert>}
-                <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-                    {listItems}
-                </List>
-                <Grid container justifyContent="center">
-            <ButtonGroup
-                disableElevation
-                variant="contained"
-                aria-label="Disabled elevation buttons"
-            >
-                {prevPage && <Button variant="contained" component={Link} to={pagePrefix + prevPage}> Prev </Button>}
-                {nextPage && <Button variant="contained" component={Link} to={pagePrefix + nextPage}> Next </Button>}
-            </ButtonGroup>
-        </Grid>
+                <PostItem 
+                    isLoading={isLoading} 
+                    apiError={apiError}
+                    listItems={listItems}
+                    prevPage={prevPage}
+                    nextPage={nextPage}
+                    pagePrefix={pagePrefix}
+                    />
+            </div>
+            <div className="col-md-4">
+                <Topic />
+            </div>
             </div>
 
         </div>

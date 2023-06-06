@@ -30,12 +30,9 @@ export default function Topic() {
         <li key={topic.id}>{topic.name}</li>
     );
     return (
-        <div className="container">
-            <div className="row">
+        <>
             <h1>Topic</h1>
             <ul>{listItems}</ul>
-            <Children data="this is parent data" />
-        </div>
-        </div>
+        </>
     )
 }

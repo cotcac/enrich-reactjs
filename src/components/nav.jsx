@@ -1,6 +1,7 @@
 import { Outlet, Link } from "react-router-dom";
 import { UserContext } from "./context"
 import { useContext, useEffect } from "react";
+import Search from "./search";
 
 export default function Navigation() {
     const user = useContext(UserContext);
@@ -15,7 +16,7 @@ export default function Navigation() {
     return (
         <nav className="navbar navbar-expand-sm navbar-dark bg-dark">
             <div className="container-fluid">
-                <a className="navbar-brand" href="javascript:void(0)">Logo</a>
+                <Link className="navbar-brand" to="/list">Logo</Link>
                 <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
                     <span className="navbar-toggler-icon"></span>
                 </button>
@@ -28,14 +29,12 @@ export default function Navigation() {
                             <Link className="nav-link" to="/contact"> Contact </Link>
                         </li>
                         <li className="nav-item">
-                            <Link className="nav-link" to="/topic"> Topic </Link>
-                        </li>
-                        <li className="nav-item">
                             <Link className="nav-link" to="/list"> New Posts </Link>
                         </li>
                     </ul>
 
                     <ul className="navbar-nav ms-auto">
+                        <Search />
                         {!user.first_name && <>
                             <li className="nav-item">
                                 <Link className="nav-link" to="/login">Login</Link>
