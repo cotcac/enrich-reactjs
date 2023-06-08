@@ -12,6 +12,7 @@ import WritePost from "./components/write";
 import ReadPost from "./components/ReadPost";
 import ListPost from "./components/ListPosts";
 import SearchPost from "./components/searchPost";
+import PostByTopic from "./components/PostByTopic";
 
 // import About from "./components/about";
 const About = lazy(() => import("./components/about"));
@@ -30,10 +31,11 @@ function App() {
           path: "contact",
           element: <Contact />,
         },
-        {  path: "topic", element: <Topic />,},
+        // {  path: "topic", element: <Topic />,},
         {  path: "register", element: <Register />,},
         {  path: "login", element: <Login />,},
         {  path: "list", element: <ListPost />,},
+        {  path: "topic/:id", element: <PostByTopic />,},
         {  path: "search", element: <SearchPost />},
         {  path: "write/:id", element: <WritePost />,},
         {  path: "read/:id", element: <ReadPost />,},

@@ -6,10 +6,11 @@ import { CKEditor } from '@ckeditor/ckeditor5-react';
 import FilesService from "../api/fileService";
 import Editor from "ckeditor5-custom-build"
 import PostsService from "../api/PostsService";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 export default function WritePost() {
     const navigate = useNavigate();
+    let location = useLocation();
     const { id } = useParams();
     console.log(id);
 
@@ -22,45 +23,51 @@ export default function WritePost() {
     };
 
     const [newBlog, setBlog] = useState(initialState);
-    const [topics, setTopics] = useState([]);
+    const [topics, setTopics] = useState([{id:0, name:""}]);
     const [errors, setErrors] = useState(initialState);
     const [myeditor, setEditor] = useState(null);
     const [isEdit, setIsEdit] = useState(false);
     const [apiError, setAPIError] = useState("");
     const [isLoading, setIsLoading] = useState(true);
     useEffect(() => {
+        const getPostToEdit = () => {
+            if (id === "0") return;
+            PostsService.getOne(id).then(response => {
+                console.log(response);
+                const data = {
+                    id: response.data.id,
+                    title: response.data.title,
+                    content: response.data.content,
+                    topic: response.data.topic.id,
+                    tags: response.data.tags
+                }
+             
+                 setBlog({...data});
+                
+            }).catch((error) => {
+                setAPIError(error.message ? error.message : "Something went wrong!")
+                setIsLoading(false)
+            })
+        }
         // Update the document title using the browser API
         if (id === "0") {
+            setIsEdit(false);
+            // setBlog({...initialState});
+            resetForm()
             document.title = "Create new post"
         } else {
             document.title = "Edit post"
             setIsEdit(true);
             getPostToEdit();
         }
-        document.title = `Write a post`;
         getTopic();
-    }, []);
+    }, [location, isEdit]);
 
-    const getPostToEdit = () => {
-        if (id === "0") return;
-        PostsService.getOne(id).then(response => {
-            console.log(response);
-            const data = {
-                id: response.data.id,
-                title: response.data.title,
-                content: response.data.content,
-                topic: response.data.topic.id,
-                tags: response.data.tags
-            }
-            setBlog(data);
-        }).catch((error) => {
-            setAPIError(error.message ? error.message : "Something went wrong!")
-            setIsLoading(false)
-        })
-    }
+
 
     const handleInputChange = (event) => {
         const { name, value } = event.target;
+        setBlog(newBlog); //
         setBlog({ ...newBlog, [name]: value });
     };
     const handleEditorChange = (event, editor) => {
@@ -101,7 +108,8 @@ export default function WritePost() {
     };
     const resetForm = () => {
         // myeditor.setData('');
-        setBlog(initialState);
+        console.log("reset form");
+        setBlog({...initialState});
         setErrors(initialState)
     };
 
@@ -225,6 +233,8 @@ export default function WritePost() {
                 {topics.map(item => (
                     <MenuItem value={item.id} key={item.id}>{item.name}</MenuItem>
                 ))}
+                 {/* // DEFAULT */}
+                <MenuItem disabled={true} value="0">Please select</MenuItem>
             </Select>
 
             <Button variant="contained" onClick={handleSubmit}>Submit</Button>

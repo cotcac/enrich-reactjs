@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
 import PostsService from "../api/PostsService";
-import { Link, useLocation, useSearchParams } from "react-router-dom";
+import { Link, useLocation, useParams, useSearchParams } from "react-router-dom";
 import Topic from "./Topic";
 import PostItem from "./posts/postItem";
 // console.log(moment.now());
 
-export default function ListPost() {
+export default function PostByTopic() {
     const [searchParams] = useSearchParams();
+
+    const { id } = useParams();
     const location = useLocation();
 
     const initPosts = []
@@ -22,15 +24,16 @@ export default function ListPost() {
 
     useEffect(() => {
         // Update the document title using the browser API
-        document.title = `List Post`;
+        console.log(id);
+        document.title = `List post by topic`;
         setCurPage(searchParams.get('page'));
         console.log("[current page]",curPage);
-        getPosts(curPage || 1)
+        getPosts(id, curPage || 1)
     }, [curPage, location]);
 
-    const getPosts = (page) => {
+    const getPosts = (topic_id, page) => {
         setIsLoading(true);
-        PostsService.getAll(page)
+        PostsService.topic(topic_id, page)
             .then(function (response) {
                 // handle success
                 console.log(response);

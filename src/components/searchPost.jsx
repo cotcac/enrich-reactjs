@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 import PostsService from "../api/PostsService";
 import { Link, useLocation, useSearchParams } from "react-router-dom";
-import { Alert, Avatar, Button, ButtonGroup, Grid, LinearProgress, List, ListItem, ListItemAvatar, ListItemText } from "@mui/material";
-import moment from 'moment';
 import Topic from "./Topic";
 import PostItem from "./posts/postItem";
 // console.log(moment.now());
@@ -65,18 +63,6 @@ export default function SearchPost() {
         };
     }, [curPage, location, query]); // re-rendering conditon.
 
-
-    const listItems = posts.map(post =>
-        <ListItem key={post.id} component={Link} to={"/read/" + post.id} >
-            <ListItemAvatar>
-                {/* <Avatar>
-                    <ImageIcon />
-                </Avatar> */}
-                {post.topic.avatar && <Avatar alt='' src={post.topic.avatar} />}
-            </ListItemAvatar>
-            <ListItemText primary={post.title} secondary={moment(post.created_at).fromNow()} />
-        </ListItem>
-    );
     return (
         <div className="container">
             <div className="row">
@@ -85,7 +71,7 @@ export default function SearchPost() {
                     <PostItem 
                     isLoading={isLoading} 
                     apiError={apiError}
-                    listItems={listItems}
+                    posts={posts}
                     prevPage={prevPage}
                     nextPage={nextPage}
                     pagePrefix={pagePrefix}
